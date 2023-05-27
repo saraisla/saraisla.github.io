@@ -36,8 +36,9 @@
     max-width: 800px;
     margin: 0 auto;
     padding: 5%;
-    }
-    /* høyre side */
+    min-height: 550px;
+  }
+  /* høyre side */
   .høyre {
     width: 60%;
     padding: 20px;
@@ -73,7 +74,6 @@
     padding: 0 50px;
     font-size: 1.2rem;
     font-weight: 500;
-    text-transform: capitalize;
   }
   .kalender .month .forrige,
   .kalender .month .neste {
@@ -92,8 +92,6 @@
     justify-content: space-between;
     padding: 0 20px;
     font-size: 1rem;
-    font-weight: 500;
-    text-transform: capitalize;
   }
   .ukedager div {
     width: 14.28%;
@@ -195,11 +193,7 @@
     padding-left: 70px;
     margin-top: 50px;
     margin-bottom: 20px;
-    text-transform: capitalize;
-  }
-  .venstre .idag-dato {
     font-size: 1rem;
-    font-weight: 500;
     color: #ffff;
   }
   /* Hendelsene på venstre side */
@@ -233,7 +227,6 @@
   .events .event .tittel {
     display: flex;
     align-items: center;
-    pointer-events: none;
   }
   .events .event .tittel .event-tittel {
     font-size: 1rem;
@@ -245,16 +238,6 @@
     font-size: 0.5rem;
   }
   .events .event:hover i {
-    color: #fff;
-  }
-  .events .event .event-time {
-    font-size: 0.8rem;
-    font-weight: 400;
-    color: #878895;
-    margin-left: 15px;
-    pointer-events: none;
-  }
-  .events .event:hover .event-time {
     color: #fff;
   }
   /* Knappen for å fjerne hendelsene */
@@ -276,25 +259,23 @@
     display: flex;
   }
   /* klapp for å legge til hendelse */
-  .leggTil-event {
+    .leggTil-event {
     position: absolute;
     bottom: 30px;
     right: 30px;
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1rem;
-    color: #878895;
-    border: 2px solid #878895;
-    opacity: 0.5;
+    color: var(--primary-clr);
+    border: 2px solid var(--primary-clr);
     border-radius: 50%;
     background-color: transparent;
     cursor: pointer;
   }
-  .leggTil-event:hover {
-    opacity: 1;
+  .leggTil-event:hover{
     background-color: transparent;
   }
   /* De dagene der det ikke er hendelser */
@@ -355,31 +336,6 @@
     gap: 5px;
     padding: 20px;
   }
-  .leggTil-event-body .leggTil-event-input {
-    width: 100%;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-  }
-  .leggTil-event-body .leggTil-event-input input {
-    width: 100%;
-    height: 100%;
-    outline: none;
-    border: none;
-    border-bottom: 1px solid #f5f5f5;
-    padding: 0 10px;
-    font-size: 1rem;
-    font-weight: 400;
-    color: #31525B;
-  }
-  .leggTil-event-body .leggTil-event-input input::placeholder {
-    color: #8b8986;
-  }
-  .leggTil-event-body .legTil-event-input input:focus {
-    border-bottom: 1px solid var(--primary-clr);
-  }
   /* footeren til wrapperen */
   .leggTil-event-footer {
     display: flex;
@@ -390,9 +346,6 @@
   .leggTil-event-footer .leggTil-event-btn {
     height: 40px;
     font-size: 1rem;
-    font-weight: 500;
-    outline: none;
-    border: none;
     color: #fff;
     background-color: var(--primary-clr);
     border-radius: 5px;
@@ -426,7 +379,6 @@ li button {
     background-color: var(--primary-clr);
     color: white;
     padding: 0.5em 1em;
-    border: none;
     border-radius: 3px;
     box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
     cursor: pointer;
@@ -470,7 +422,7 @@ table {
         display: flex;
         margin-bottom: 2%;
      }
-  button, .delete {
+  button{
       background-color: var(--primary-clr);
       color: white;
       padding: 10px 20px;
@@ -479,7 +431,7 @@ table {
       border: none;
       cursor: pointer;
       }
-  button:hover, .delete:hover {
+  button:hover{
       background-color: #cf880c;
       }
 /* Navbar */
@@ -490,13 +442,12 @@ table {
     background-color: #31525B;
     padding: 27px;
     border-radius: 10px;
-    margin: 10px;
-    margin-top: 40px;
-    margin-left: 10%;
-    margin-right: 15%;
+    margin-top: 50px;
+    margin-bottom: 4%;
+    margin-left: 12%;
+    margin-right: 17%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     width: 80%;
-    margin-bottom: 2%;
     font-size: 20px;
   }
   nav a {
@@ -539,9 +490,6 @@ footer {
     font-size: 20px;
     color: #e2e1dc;
   }
-.undersider{
-    position: absolute;
-}
   .footer-left {
     display: flex;
     align-items: center;
@@ -613,6 +561,9 @@ footer {
                     padding-bottom: 8px;
                 }
                 }
+                .footer-left{
+                  flex-direction: column;
+                }
               @media screen and (max-width: 500px) {
                 .kalender .month {
                   height: 75px;
@@ -646,7 +597,4 @@ footer {
                 .sidesider a{
                     margin-bottom: 5px;
                 }
-                  .undersider{
-                    position: relative;
-}
               }
