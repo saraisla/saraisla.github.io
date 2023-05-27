@@ -1,4 +1,4 @@
-  //Henter elemtene fra html-dokumentet
+//Henter elemtene fra html-dokumentet
   const kalender = document.querySelector(".kalender"),
   dato = document.querySelector(".dato"),
   dagerContainer = document.querySelector(".dager"),
@@ -15,13 +15,11 @@
   leggTilEventFra = document.querySelector(".event-tid-fra "),
   leggTilEventTil = document.querySelector(".event-tid-til "),
   leggTilEventSubmit = document.querySelector(".leggTil-event-btn ");
-
 // definerer dagens dato og dagen som trykkes på i kalenderen.
 let today = new Date();
 let aktivDag;
 let month = today.getMonth();
 let year = today.getFullYear();
-
 // definerer alle månedene
 const months = [
   "Januar",
@@ -37,40 +35,31 @@ const months = [
   "November",
   "Desember",
 ];
-
 // lager et array med hendelser og kaller funksjonen som henter hendelsene, som er skrevet lengre nede i dokumentet
 const eventsArr = [];
 getEvents();
-
-function initKalender() {
+function settOppKalender() {
   // Oppretter dato-objekter for den første dagen i måneden, den siste dagen i måneden,
   // og den siste dagen i forrige måned (for å vise dager fra forrige måned i kalenderen)
-  const firstDag = new Date(year, month, 1);
-  const lastDag = new Date(year, month + 1, 0);
-  const forrigeLastDag = new Date(year, month, 0);
-
+  const førsteDag = new Date(year, month, 1);
+  const sisteDag = new Date(year, month + 1, 0);
+  const forrigeSisteDag = new Date(year, month, 0);
   // Finner antall dager i forrige måned og antall dager i denne måneden
-  const forrigeDager = forrigeLastDag.getDate();
-  const lastDato = lastDag.getDate();
-
+  const forrigeDager = forrigeSisteDag.getDate();
+  const sisteDato = sisteDag.getDate();
   // Finner hvilken dag i uken den første dagen i denne måneden er (0 = søndag, 1 = mandag, osv.)
-  const dag = firstDag.getDay();
-
+  const dag = førsteDag.getDay();
   // Finner hvor mange dager fra neste måned som skal vises i denne månedens kalender
-  const nesteDager = 7 - lastDag.getDay() - 1;
-
+  const nesteDager = 7 - sisteDag.getDay() - 1;
   // Setter datoen i HTML-elementet til måneden og året som vises i kalenderen
   dato.innerHTML = months[month] + " " + year;
-
   let dager = "";
-
   // Legger til dager fra forrige måned som skal vises i denne månedens kalender
   for (let x = dag; x > 0; x--) {
     dager += `<div class="dag forrige-dato">${forrigeDager - x + 1}</div>`;
   }
-
   // Legger til dager fra denne måneden i kalenderen
-  for (let i = 1; i <= lastDato; i++) {
+  for (let i = 1; i <= sisteDato; i++) {
     // Sjekker om det finnes en hendelse på denne dagen
     let event = false;
     eventsArr.forEach((eventObj) => {
@@ -82,7 +71,6 @@ function initKalender() {
         event = true;
       }
     });
-
     // Hvis dagen er i dag, setter jeg aktivDag-variabelen, og oppdater hendelsene for denne dagen
     if (
       i === new Date().getDate() &&
@@ -92,7 +80,6 @@ function initKalender() {
       aktivDag = i;
       getAktivDag(i);
       updateEvents(i);
-
       // Hvis det finnes en hendelse på denne dagen, legger jeg til klassen "event" og "active"
       if (event) {
         dager += `<div class="dag today active event">${i}</div>`;
@@ -108,7 +95,6 @@ function initKalender() {
       }
     }
   }
-
   // Legger til dager fra neste måned som skal vises i denne månedens kalender
   for (let j = 1; j <= nesteDager; j++) {
     dager +=
@@ -117,7 +103,6 @@ function initKalender() {
   dagerContainer.innerHTML = dager;
   addListner();
 }
-
 //funksjon som bytter til forrige måned
 function forrigeMonth() {
   // reduserer måned med 1
@@ -129,7 +114,7 @@ function forrigeMonth() {
     year--;
   }
   // oppdaterer kalenderen med den nye måneden
-  initKalender();
+  settOppKalender();
 }
 // funskjon som bytter til neste måned på samme måte som forrige måned
 function nesteMonth() {
@@ -138,15 +123,12 @@ function nesteMonth() {
     month = 0;
     year++;
   }
-  initKalender();
+  settOppKalender();
 }
-
 // legger til eventlister til forrige måned og neste måned knappene som kjører funksjonene over
 forrige.addEventListener("click", forrigeMonth);
 neste.addEventListener("click", nesteMonth);
-
-initKalender();
-
+settOppKalender();
 // funksjon som legger til en lytter på hver dag i kalenderen
 function addListner() {
   // Velger alle elementene med klassenavn "dag" og legger til en klikk-lytter på hvert enkelt element
@@ -157,16 +139,13 @@ function addListner() {
       getAktivDag(e.target.innerHTML);
       updateEvents(Number(e.target.innerHTML));
       aktivDag = Number(e.target.innerHTML);
-
       // Fjerner "active" klassen fra alle dager
       dager.forEach((dag) => {
         dag.classList.remove("active");
       });
-
       // Hvis den klikkede dagen tilhører forrige måned, går vi til forrige måned og markerer riktig dag
       if (e.target.classList.contains("forrige-dato")) {
         forrigeMonth();
-
         // Vent 100 millisekunder før å markere riktig dag for å gi funksjonen tid til å oppdatere kalenderen
         setTimeout(() => {
           const dager = document.querySelectorAll(".dag");
@@ -204,16 +183,13 @@ function addListner() {
     });
   });
 }
-
 // legger til en eventlistener på I dag knappen som tar deg tilbake til dagens dato
 idagBtn.addEventListener("click", () => {
   today = new Date();
   month = today.getMonth();
   year = today.getFullYear();
-  initKalender();
+  settOppKalender();
 });
-
-
 //function som henter dagen som er klikket på og oppretter et datoopjekt 
 function getAktivDag(dato) {
   // Oppretter et nytt datobjekt med dato-argumentet, og angir år og måned med global variabler
@@ -225,12 +201,9 @@ function getAktivDag(dato) {
   // Setter teksten i HTML-elementet med ID "eventDato" til datoformatet DD MM ÅÅÅÅ, hentet fra variablene "dato", "month" og "year"
   eventDato.innerHTML = dato + " " + months[month] + " " + year;
 }
-
-
 //funskjon som opptdaterer hendelsene i den falgte dagen og viser teksten "ingen hendelser" hvis det ikke er noen hendelser i den valgte dagen
 function updateEvents(dato) {
   let events = "";
-
   // Ser gjennom alle hendelsene i hendelseslisten
   eventsArr.forEach((event) => {
     // Sjekk om hendelsen skjer på den valgte datoen
@@ -254,17 +227,14 @@ function updateEvents(dato) {
       });
     }
   });
-
   // Hvis det ikke er noen hendelser på den valgte datoen, legg til en "ingen hendelser"-melding
   if (events === "") {
     events = `<div class="no-event">
             <h3>Ingen hendelser</h3>
         </div>`;
   }
-
   // Oppdater HTML-elementet for hendelser med variabelen 'events'
   eventsContainer.innerHTML = events;
-
   // Lagre hendelseslisten i localStorage
   saveEvents();
 }
@@ -272,31 +242,26 @@ function updateEvents(dato) {
 leggTilEventBtn.addEventListener("click", () => {
   leggTilEventWrapper.classList.toggle("active");
 });
-
 //knapp som fjerner hendelse når trykket på
 leggTilEventLukkBtn.addEventListener("click", () => {
   leggTilEventWrapper.classList.remove("active");
 });
-
 //hvis man trykker et sted på dokumentet som er utenfor eventWrapper, så vil den fjernes.
 document.addEventListener("click", (e) => {
   if (e.target !== leggTilEventBtn && !leggTilEventWrapper.contains(e.target)) {
     leggTilEventWrapper.classList.remove("active");
   }
 });
-
 // Legger til en lytter på "input"-hendelsen på addEventTittel-elementet
   leggTilEventTittel.addEventListener("input", (e) => {
     // Begrenser teksten som brukeren skriver inn til maksimalt 60 tegn
     leggTilEventTittel.value = leggTilEventTittel.value.slice(0, 60);
   });
-
 //legger til en lytter på input-feltet med ID "leggTilEventFra".
 addEventListener("input", (e) => {
   // Fjerner alle tegn som ikke er tall eller kolon
   leggTilEventFra.value = leggTilEventFra.value.replace(/[^0-9:]/g, "");
   leggTilEventTil.value = leggTilEventTil.value.replace(/[^0-9:]/g, "");
-  
   // Legger til kolon etter to tall hvis det ikke finnes allerede
   if (leggTilEventFra.value.length === 2) {
     leggTilEventFra.value += ":";
@@ -304,7 +269,6 @@ addEventListener("input", (e) => {
   if (leggTilEventTil.value.length === 2) {
     leggTilEventTil.value += ":";
   }
-  
   // Begrenser lengden på input-feltene til 5 tegn
   if (leggTilEventFra.value.length > 5) {
     leggTilEventFra.value = leggTilEventFra.value.slice(0, 5);
@@ -313,7 +277,6 @@ addEventListener("input", (e) => {
     leggTilEventTil.value = leggTilEventTil.value.slice(0, 5);
   }
 });
-
 //funksjon som legger til hendelser til eventsArr
 leggTilEventSubmit.addEventListener("click", () => {
   const eventTittel = leggTilEventTittel.value;
@@ -324,7 +287,6 @@ leggTilEventSubmit.addEventListener("click", () => {
     alert("Fyll ut alle feltene");
     return;
   }
-
 const tidFraArr = eventTidFra.split(":"); 
 // Deler tiden fra tekststrengen og legger den inn i en array
 const tidTilArr = eventTidTil.split(":");  
@@ -346,7 +308,6 @@ if (
   alert("Ugyldig tidsformat");  // Viser en feilmelding hvis tidene er ugyldige
   return;  // Avslutter funksjonen
 }
-
 // Sjekker om hendelsen allerede er lagt til
 let eventExist = false;
 eventsArr.forEach((event) => {
@@ -370,7 +331,6 @@ if (eventExist) {
   return;  
   // Avslutter funksjonen
 }
-
 const nyEvent = {
   tittel: eventTittel,  
   // Legger til tittelen til hendelsen i et nytt objekt
@@ -379,7 +339,6 @@ const nyEvent = {
 };
 console.log(nyEvent);
 console.log(aktivDag);
-
 let eventLagtTil = false;
 if (eventsArr.length > 0) {
   eventsArr.forEach((item) => {
@@ -394,7 +353,6 @@ if (eventsArr.length > 0) {
     }
   });
 }
-
 if (!eventLagtTil) {  
   // Legger til en ny dag hvis hendelsen ikke ble lagt til i en eksisterende dag
   eventsArr.push({
@@ -404,7 +362,6 @@ if (!eventLagtTil) {
     events: [nyEvent],
   });
 }
-
 leggTilEventWrapper.classList.remove("active");
 //skjuler eventwrapper og tømmer input-feltene
 leggTilEventTittel.value = "";
@@ -417,7 +374,6 @@ if (!aktivDagEl.classList.contains("event")) {
   aktivDagEl.classList.add("event");
 }
 });
-
 //funksjon som sletter hendelsen når du trykker på eventsContainer
 eventsContainer.addEventListener("click", (e) => {
   if (e.target.classList.contains("event")) {
@@ -452,12 +408,10 @@ eventsContainer.addEventListener("click", (e) => {
     }
   }
 });
-
 //funksjon som lagrer hendelsene i local storage
 function saveEvents() {
   localStorage.setItem("events", JSON.stringify(eventsArr));
 }
-
 //funksjon som henter hendelsene fra local storage
 function getEvents() {
   //sjekker om hendelsene allerede er lagret i local storage og returnerer hendelsen hvis den er der
